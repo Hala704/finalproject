@@ -298,6 +298,85 @@ public class Finalproject3 {
              
   
         }
+        
+        
+        
+        
+        
+        package finalproject3;
+
+import static finalproject3.Admin.Update_Book_Detail;
+import static finalproject3.Admin.booktitle;
+import static finalproject3.Admin.numberofbook;
+import java.util.Scanner;
+
+/**
+ *
+ * @author hp
+ */
+public class student {
+static String[][] student = {{"1212","Kareem","987654321"}, {"1515","Mohammed","147852"}};
+    public static String GetIDStudent(String username) {
+        String id = "";
+        for (int i = 0; i < student.length; i++) {
+            if (student[i][1].equals(username)) {
+                id = student[i][0];
+                break;
+            }
+        }
+        return id;
+    }
+
+    public static void ReserveBook(String book_title, String username) {
+        for (int i = 0; i < numberofbook; i++) {
+            if (booktitle[i][0].equals(book_title)) {
+                System.out.println("Title :" + booktitle[i][0] + ", Number :" + booktitle[i][1] + ", auther :" + booktitle[i][2] + " ,status :" + booktitle[i][3]);
+                if (booktitle[i][3].equals("Available")) {
+                    System.out.println("If you  reserve this book , Enter Y");
+                    Scanner input4 = new Scanner(System.in);
+                    String input_stu = input4.next();
+                    if (input_stu.equals("Y") || input_stu.equals("y")) {
+                        String stu_id = GetIDStudent(username);
+                        Add_Books_Reserve(booktitle[i][0], Integer.parseInt(booktitle[i][1]), booktitle[i][2], stu_id);
+                        Update_Book_Detail(Integer.parseInt(booktitle[i][1]), booktitle[i][0], booktitle[i][1], booktitle[i][2], "reserved");
+                        System.out.println("The reserved done");
+                        break;
+                    } else {
+                        System.out.println("Please Enter a correct input");
+                    }
+                } else {
+                    System.out.println("The book reserved by anthor student");
+                }
+            }
+        }
+    }
+
+    public static void CheckBookStatusStu(String input) {
+        for (int i = 0; i < numberofbook; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (booktitle[i][j].equals(input)) {
+                    System.out.println("Title :" + booktitle[i][0] + ", Status :" + booktitle[i][3]);
+                    break;
+                }
+            }
+        }
+    }
+
+    public static void RenewBook(String input) {
+        for (int i = 0; i < numberofbook; i++) {
+            if (booktitle[i][1].equals(input)) {
+                booktitle[i][3] = "reserved";
+                break;
+            }
+        }
+    }
+
+    private static void Add_Books_Reserve(String string, int parseInt, String string0, String stu_id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+  
+}
+
          
                  }
         
