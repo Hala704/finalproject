@@ -1,386 +1,438 @@
 # finalproject
 this is my project
-public class Admin {
-     static String[][] admin1 = {{"Hala", "0123456"}, {"admin", "98976"}};
-     static String[][] booktitle = new String[100][4];//في المصفوفة الاولى بنخزن الكتاب في التانية بنخزن التفاصيل 
-     static String[][] Del = new String[100][4];//هاي عشان نستخدمها في دالة الحدف
-     static String[][] reservedBook = new String[100][5];//دالة للكتب الحجوزة
-     static String[][]  CDBook = new String[100][5];//دالة عشان نحدف الكتب المحجوزة
-     static int BookReserved=0;//هادا للكتب المحجوزة
-     static int numberofbook;//لمعرفة عدد الكتب
-     public static Boolean admin(String Name, String Password) {
-        boolean A = false;
-        for (int i = 0; i < admin1.length; i++) {
-            if (Arrays.asList(admin1[i][0]).contains(Name)) {
-                if (Arrays.asList(admin1[i][1]).contains(Password)) {
-                    A = true;
-                    break;
-                } else {
-                    A = false;
-                }
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package final_project;
 
-            } else {
-                A = false;
-            }
-        }
-        return A;
-    }
-     public static void Add_Books(String Book_Tittle, int ISBN, String author) {
-        booktitle[numberofbook][0] = Book_Tittle;
-        booktitle[numberofbook][1] = Integer.toString(ISBN);//هان حولناه لنص عشان المصفوفة
-        booktitle[numberofbook][2] = author;
-        booktitle[numberofbook][3] = "Available";//هاي حالة الكتاب
-        numberofbook++;
-    }
-     public static void Update_Book_Detail(int ISBN, String Book_Tittle, String ISBN1, String author  ,String status ) {
-        for (int i = 0; i < numberofbook; i++) {
-            if (Integer.toString(ISBN).equals(booktitle[i][1])) {
-                booktitle[i][0] = Book_Tittle;
-                booktitle[i][1] = ISBN1;//الرقم الجديد
-                booktitle[i][2] = author ;
-                booktitle[i][3] = status ;
-                break;
-            }
-              }
-                }
-     public static void Delete_book (int ISBN){
-          int Z = 0;
-        int X = 0;
-        int rm_index = 0;
-        for (int i = 0; i < BookReserved; i++) {
-            if (Integer.toString(ISBN).equals(Del[i][1])) {
-                rm_index = i;
-                break;
-            }
-        }
-        for (int i = 0; i < CDBook.length; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (X == 5) {
-                    X = 0;
-                }
-                if (i == rm_index) {
-                    Z = Z - 1;
-                    break;
-                }
-                CDBook[Z][X] = Del[i][j];
-                X++;
-            }
-            Z++;
-        }
-        BookReserved--;
-    }
-     public static void View_Late_Books() {
-        System.out.println("The late book is:");
-        for (int i = 0; i < numberofbook; i++) {
-            if (booktitle[i][3].equals("late")) {
-                System.out.println("Title :" + booktitle[i][0] + ", Number :" + booktitle[i][1]);
-            } else {
-                System.out.println("No late Book");
-            }
-        }
-    }
-     public static void View_Reserved_Books() {
-        if (BookReserved == 0) {
-            System.out.println("No book reserved");;
-        } else {
-            System.out.println("Reserved books is:");
-            for (int i = 0; i < BookReserved; i++) {
-                System.out.println("Title :" + reservedBook[i][0] + ", Number :" + reservedBook[i][1] + ", The stdu_id:" + reservedBook[i][4]);
-            }
-        }
-    }
-     public static void View_Student_Detail(int ISBN) {
-     int f = 0;
-        if (BookReserved == 0) {
-            System.out.println("No books is reserved");
-        } else {
-            for (int i = 0; i < BookReserved; i++) {
-                if (Integer.toString(ISBN).equals(reservedBook[i][4])) {
-                    f++;
-                }
-                if (f == 0) {
-                    System.out.println("No reserved book for this student");
-                } else {
-                    System.out.println("The number of books reserved for the student is:" + f);
-                }
-            }
-        }
-     }
-     public static void View_All_Books() {
-        for (int i = 0; i < numberofbook; i++) {
-            System.out.println("Title :" + booktitle[i][0] + ", Number :" + booktitle[i][1] + ", auther :" + booktitle[i][2] + " ,status :" +booktitle[i][3]);
-        }
-    }
-     public static void Search_For_Book(String input) {
-        for (int i = 0; i < numberofbook; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (booktitle[i][j].equals(input)) {
-                    for (int x = 0; x < 4; x++) {
-                        System.out.println(booktitle[i][x]);
-                    }
-                    break;
-                }
-            }
-        }
-    }
-      public static void Return_book(String input) {
-        String book_num = "";
-        for (int i = 0; i < BookReserved; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (reservedBook[i][j].equals(input)) {
-                    for (int x = 0; x < 5; x++) {
-                        book_num = reservedBook[i][1];
-                        System.out.println(reservedBook[i][x]);
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < numberofbook; i++) {
-            if (booktitle[i][1].equals(book_num)) {
-                booktitle[i][3] = "Available";
-                break;
-            }
-        }
-        Delete_book(Integer.parseInt(book_num));
-        NewArray(reservedBook, CDBook);
-    }
-
-public static void NewArray(String[][] x, String[][] y) {
-        for (int i = 0; i < x.length; i++) {
-            for (int j = 0; j < x[i].length; j++) {
-                x[i][j] = y[i][j];
-            }
-        }
-    }
-public static void PrintNumTitleBook() {
-        for (int i = 0; i < numberofbook; i++) {
-            System.out.println("Title :" + booktitle[i][0] + ", Number :" + booktitle[i][1]);
-        }
-    }
-}
-
-
-
-
-import static finalproject3.Admin.Add_Books;
-import static finalproject3.Admin.Del;
-import static finalproject3.Admin.Delete_book;
-import static finalproject3.Admin.NewArray;
-import static finalproject3.Admin.PrintNumTitleBook;
-import static finalproject3.Admin.Return_book;
-import static finalproject3.Admin.Search_For_Book;
-import static finalproject3.Admin.View_All_Books;
-import static finalproject3.Admin.View_Late_Books;
-import static finalproject3.Admin.View_Reserved_Books;
-import static finalproject3.Admin.admin;
-import static finalproject3.Admin.View_Student_Detail;
-import static finalproject3.Admin.booktitle;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  *
  * @author hp
  */
-public class Finalproject3 {
+public class Final_project {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-         Admin X = new Admin();
-        System.out.println("Welcom ");
-        while (true) {
-            System.out.println("please,enter your choice(Admin 11 , Student 22 , Exit 33");
-            Scanner input = new Scanner(System.in);
-            int yourchice = input.nextInt();
-            if (yourchice == 11 || yourchice == 22|| yourchice == 33){
-            if (yourchice == 11) {
-            System.out.println("Please.enter your name:");
-            Scanner inputx = new Scanner(System.in);
-                String Name = inputx.next();
-                System.out.println("Please,enter your password:");
-                Scanner inputp = new Scanner(System.in);
-                String password = inputp.next(); 
-                boolean CheckTheAdmin = admin(Name, password);
-                
-                if (CheckTheAdmin) {
-        System.out.println("1- Add new book");
-        System.out.println("2- Check book status");
-        System.out.println("3- Update book detail");
-        System.out.println("4- Delete book");
-        System.out.println("5- View late books");
-        System.out.println("6- View reserved books");
-        System.out.println("7- View student detail");
-        System.out.println("8- View all books");
-        System.out.println("9- Search for book");
-        System.out.println("10-Return book (change book status)"); 
-         System.out.println("11- To exit");
-        System.out.println("Please,Enter Your Choice :)");
-        Scanner inputv = new Scanner(System.in);
-        int userchoice = inputv.nextInt();
-                
-        switch(userchoice){
-            case 1:     
-        System.out.println("Please,Enter The_Book_Tittle: ");
-        Scanner input5 = new Scanner(System.in);
-        String Book_Tittle = input5.next();
-        System.out.println("Pleas,Enter The_ISBN: ");
-        Scanner input6 = new Scanner(System.in);
-        int ISBN = input6.nextInt();
-        System.out.println("Please enter The author: ");
-        Scanner input7 = new Scanner(System.in);
-        String author = input7.next();
-        Add_Books(Book_Tittle , ISBN , author);
-        break;
-                
-            case 2:
-        break;
-                
-            case 3:
-        System.out.println("Pleas,Enter The_num:");
-        Scanner input11 = new Scanner(System.in);
-        int num = input11.nextInt();
-        if (Integer.toString(num).equals("ISBN")){
-        System.out.println("please.Enter New_Book_Tittle: ");
-        Scanner input8 = new Scanner(System.in);
-        String New_Book_Tittle = input8.next();
-        System.out.println("please.Enter new_ISBN:");
-        Scanner input9 = new Scanner(System.in);
-        String New_ISBN = input9.next();
-        System.out.println("please.Enter new_author:");
-        Scanner input10 = new Scanner(System.in);
-        String New_author = input10.next();
-        }else{
-        System.out.println("Invalid num:(");
-        }
-        break;
-            case 4:
-                System.out.println("Please enter the book number: ");
-        PrintNumTitleBook();
-        Scanner input20 = new Scanner(System.in);
-        int book_num = input20.nextInt();
-        Delete_book ( book_num);
-        NewArray(booktitle, Del);
-        PrintNumTitleBook();
-        break;
-            case 5:
-        View_Late_Books();
-        break;
-            case 6:
-        View_Reserved_Books();
-        break;
-            case 7:
-        System.out.println("Please enter the student number: ");
-        Scanner input12 = new Scanner(System.in);
-        int stu_no = input12.nextInt();
-        View_Student_Detail(stu_no);
-        break;
-            case 8:
-        View_All_Books();
-        break;
-            case 9:
-        System.out.println("Please enter book title or book number or author");
-        Scanner input13 = new Scanner(System.in);
-        String admins = input13.next();
-        Search_For_Book(admins);
-        break; 
         
-            case 10:
-        System.out.println("Please enter book number or Student id:");
-        Scanner input14 = new Scanner(System.in);
-        admins = input14.next();
-        Return_book(admins);
-        break;
-         
-        }
-        
-             
-  
-        }
-        
-        
-        
-        
-        
-        package finalproject3;
+        ArrayList<Book> books = new ArrayList<Book>();
+        Book b1 = new   Book (1 , "War and Peace" , "Leo Tolstoy" , "available");
+        books.add(b1);
+        Book b2 = new   Book (2 , "Song of Solomon" , "Toni Morrison" , "reserved");
+        books.add(b2);
+        Book b3 = new   Book (3 , "Ulysses" , "James Joyce" , "available");
+        books.add(b3);
+        Book b4 = new   Book (4 , "Shadow of the Wind" , "Carlos Ruiz Zafon" , "reserved");
+        books.add(b4);
+        Book b5 = new   Book (5 , " Lord of the Rings" , "CJ.R.R. Tolkien" , "late");
+        books.add(b5);
 
-import static finalproject3.Admin.Update_Book_Detail;
-import static finalproject3.Admin.booktitle;
-import static finalproject3.Admin.numberofbook;
-import java.util.Scanner;
+        ArrayList<Student> Students = new ArrayList<Student>();
+        ArrayList<Book> booksforS1 = new ArrayList<Book>();
+        booksforS1.add(b2);
+        Student s1 = new Student ("s1" , 12345 ,booksforS1 );
+        Students.add(s1);
+
+        ArrayList<Book> booksforS2 = new ArrayList<Book>();
+        booksforS1.add(b4);
+        Student s2 = new Student ("s2" , 12345 ,booksforS2 );
+        Students.add(s2);
+
+        ArrayList<Book> booksforS3 = new ArrayList<Book>();
+        Student s3 = new Student ("s3" , 12345 ,booksforS3 );
+        Students.add(s3);
+
+        Scanner input = new Scanner(System.in);
+        System.out.println("Welcom ");
+        System.out.println("please,enter your choice(Admin 11 , Student 22 , Exit 33");
+        int yourchice = input.nextInt();
+        if (yourchice ==11) {
+            System.out.println("Please.enter your name:");
+            String Name = input.next();
+            System.out.println("Please,enter your password:");
+            int password = input.nextInt();
+
+            if (Name.equalsIgnoreCase("Admin") && password == 12345 ){
+                while(true){
+                System.out.println("1- Add new book");
+                System.out.println("2- Check book status");
+                System.out.println("3- Update book detail");
+                System.out.println("4- Delete book");
+                System.out.println("5- View late books");
+                System.out.println("6- View reserved books");
+                System.out.println("7- View student detail");
+                System.out.println("8- View all books");
+                System.out.println("9- Search for book");
+                System.out.println("10-Return book (change book status)");
+                System.out.println("11- To exit");
+                System.out.println("Please,Enter Your Choice :)");
+                int userchoice = input.nextInt();
+                switch(userchoice){
+                    case 1:
+                        System.out.println("Pleas,Enter The_ISBN: ");
+                        int ISBN = input.nextInt();
+                        System.out.println("Please,Enter The_Book_Tittle: ");
+                        String Book_Tittle = input.next();
+                        System.out.println("Please enter The author: ");
+                        String author = input.next();
+                        System.out.println("Please enter The status: ");
+                        String status = input.next();
+                   books.add(new Book(ISBN ,Book_Tittle ,author ,status ));
+                    break;
+                    case 2:
+                        System.out.println("Pleas,Enter The_ISBN: ");
+                        int ISBN2 = input.nextInt();
+                        for (int i = 0 ; i < books.size() ;i++){
+                           if (books.get(i).getISBN() ==ISBN2) {
+                               System.out.println(books.get(i).getStatus());
+                           }
+                        }
+                        break;
+                    case 3:
+                        System.out.println("Pleas,Enter The_ISBN: ");
+                        int ISBN3 = input.nextInt();
+                        for (int i = 0 ; i < books.size() ;i++){
+                            if (books.get(i).getISBN() ==ISBN3) {
+                                System.out.println("Enter new Title");
+                                String new_title = input.next();
+                                System.out.println("Enter new author");
+                                String new_author = input.next();
+                                System.out.println("Enter new status");
+                                String new_status = input.next();
+                                books.get(i).setTitle(new_title);
+                                books.get(i).setAuthor(new_author);
+                                books.get(i).setStatus(new_status);
+                            }
+                        }
+                        break;
+                    case 4:
+                        System.out.println("Pleas,Enter The_ISBN: ");
+                        int ISBN4 = input.nextInt();
+                        for (int i = 0 ; i < books.size() ;i++){
+                            if (books.get(i).getISBN() ==ISBN4) {
+                          books.remove(i);
+                            }
+                        }
+                        break;
+                    case 5:
+                        for (int i = 0 ; i < books.size() ;i++){
+                      if( books.get(i).getStatus() =="late") {
+                          System.out.println(books.get(i).getTitle());
+                      }
+                        }
+                        break;
+                    case 6:
+                        for (int i = 0 ; i < Students.size() ;i++){
+                         for (int j = 0 ; j < Students.get(i).getReservedBooks().size() ;j++){
+                             System.out.println("Student id : "+ Students.get(i).getId());
+                             System.out.println("book title : "+Students.get(i).getReservedBooks().get(j).getTitle());
+                        } }
+                        break;
+                    case 7:
+                        System.out.println(" Enter Student id : ");
+                        String Sid = input.nextLine();
+                        for (int i = 0 ; i < Students.size() ;i++){
+                         if (Students.get(i).getId() == Sid){
+                             System.out.println("id :" + Students.get(i).getId() + "password" + Students.get(i).getPassword()
+                             +" reserved books "+ Students.get(i).getReservedBooks().size()
+                             );
+                         }
+                        }
+                        break;
+                    case 8:
+                        for (int i = 0 ; i < books.size() ;i++){
+                        System.out.println("BOOK Title "+ books.get(i).getTitle()
+                        +"BOOK ISBN" + books.get(i).getISBN() +"BOOK Author" + books.get(i).getAuthor()
+                        +"BOOK Status" + books.get(i).getStatus()
+                        );
+                        }
+                        break;
+                    case 9:
+                        System.out.println("To search for the book by the title press 1," +
+                                " to search by the author press 2, to search by ISBN press 3 ");
+                        int in = input.nextInt();
+                        switch (in){
+                            case 1 :
+                                System.out.println(" enter title ");
+                                String title = input.nextLine();
+                                for (int i = 0 ; i < books.size() ;i++){
+                                    if (books.get(i).getTitle() == title){
+                                        System.out.println("BOOK Title "+ books.get(i).getTitle()
+                                                +"BOOK ISBN" + books.get(i).getISBN() +"BOOK Author" + books.get(i).getAuthor()
+                                                +"BOOK Status" + books.get(i).getStatus()
+                                        );
+                                    }
+
+                                }
+                                break;
+                            case 2 :
+                                System.out.println(" enter author ");
+                                String author1 = input.nextLine();
+                                for (int i = 0 ; i < books.size() ;i++){
+                                    if (books.get(i).getAuthor() == author1){
+                                        System.out.println("BOOK Title "+ books.get(i).getTitle()
+                                                +"BOOK ISBN" + books.get(i).getISBN() +"BOOK Author" + books.get(i).getAuthor()
+                                                +"BOOK Status" + books.get(i).getStatus()
+                                        );
+                                    }
+
+                                }
+                                break;
+                            case 3 :
+                                System.out.println(" enter ISBN ");
+                                int ISBN1 = input.nextInt();
+                                for (int i = 0 ; i < books.size() ;i++){
+                                    if (books.get(i).getISBN() == ISBN1){
+                                        System.out.println("BOOK Title "+ books.get(i).getTitle()
+                                                +"BOOK ISBN" + books.get(i).getISBN() +"BOOK Author" + books.get(i).getAuthor()
+                                                +"BOOK Status" + books.get(i).getStatus()
+                                        );
+                                    }
+
+                                }
+                                break;
+                        }
+                        break;
+                    case 10:
+                        System.out.println(" enter ISBN ");
+                        int ISBN1 = input.nextInt();
+                        System.out.println(" enter Student id : ");
+                        String sid = input.nextLine();
+                        for (int i = 0 ; i < books.size() ;i++){
+                            if (books.get(i).getISBN() == ISBN1){
+                                books.get(i).setStatus("available");
+                                for (int x = 0 ; x < Students.size() ;x++){
+                            if (Students.get(x).getId() == sid ){
+                                Students.get(x).getReservedBooks().remove(books.get(i) );
+                             Students.get(x).setReservedBooks(Students.get(x).getReservedBooks());
+                                    }
+                                }
+                            }}
+
+
+                        break;
+                    case 11:
+                        break;
+                }
+            }
+            }
+
+
+        } else if (yourchice ==22){
+            System.out.println("Please.enter your name:");
+            String Name = input.next();
+            System.out.println("Please,enter your password:");
+            int password = input.nextInt();
+            if (Name.equalsIgnoreCase("Hala") && password == 12345 ){
+                while(true){
+                System.out.println("1- Search for book");
+                System.out.println("2- Reserve book");
+                System.out.println("3- Check book status ");
+                System.out.println("4- Renew book ");
+                System.out.println("Please,Enter Your Choice :)");
+                int userchoice = input.nextInt();
+                switch(userchoice){
+                    case 1:
+                        System.out.println( "To search for the book by the title press 1," +
+                        " to search by the ISBN press 2 ");
+                        int inp = input.nextInt();
+                        if (inp ==1 ){
+                            System.out.println(" enter title ");
+                            String title = input.nextLine();
+                            for (int i = 0 ; i < books.size() ;i++){
+                                if (books.get(i).getTitle() == title){
+                                    System.out.println("BOOK Title "+ books.get(i).getTitle()
+                                            +"BOOK ISBN" + books.get(i).getISBN() +"BOOK Author" + books.get(i).getAuthor()
+                                            +"BOOK Status" + books.get(i).getStatus()
+                                    );
+                                }
+
+                            }
+                        } else  if (inp ==2){
+                            System.out.println(" enter ISBN ");
+                            int ISBN1 = input.nextInt();
+                            for (int i = 0 ; i < books.size() ;i++){
+                                if (books.get(i).getISBN() == ISBN1){
+                                    System.out.println("BOOK Title "+ books.get(i).getTitle()
+                                            +"BOOK ISBN" + books.get(i).getISBN() +"BOOK Author" + books.get(i).getAuthor()
+                                            +"BOOK Status" + books.get(i).getStatus()
+                                    );
+                                }
+
+                            }
+                        }
+                        break;
+                    case 2:
+                        System.out.println(" enter title ");
+                        String title = input.nextLine();
+                        for (int i = 0 ; i < books.size() ;i++){
+                            if (books.get(i).getTitle() == title){
+                              if (books.get(i).getStatus().equalsIgnoreCase("available") ) {
+                                  books.get(i).setStatus("reserve");
+                                  System.out.println(" done ");
+                              }
+                              else {
+                                  System.out.println(" sorry book reserve ");
+                              }
+                            }
+                        }
+                        break;
+                    case 3:
+                        System.out.println( "To search for the book by the title press 1," +
+                                " to search by the author press 2 ");
+                        int in = input.nextInt();
+                        if (in == 1){
+                            System.out.println("Pleas,Enter The title: ");
+                            String title1 = input.nextLine();
+                            for (int i = 0 ; i < books.size() ;i++){
+                                if (books.get(i).getTitle() == title1){
+                                    System.out.println("title : "+ title1 + "Status"+books.get(i).getStatus());
+                                }
+                            }
+                        } else if (in == 2){
+                            System.out.println("Pleas,Enter The author: ");
+                            String author = input.nextLine();
+                            for (int i = 0 ; i < books.size() ;i++){
+                                if (books.get(i).getAuthor() == author){
+                                    System.out.println("title : "+ books.get(i).getTitle() + "Status"+books.get(i).getStatus());
+                                }
+                            }
+                        }
+                        break;
+                    case 4:
+                        System.out.println(" done ");
+                        break;
+
+                }
+            }
+        } else {
+            System.out.println("Thank you");
+            System.exit(0) ;
+       
+    }
+        }
+}}
+
+
+
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package final_project;
 
 /**
  *
  * @author hp
  */
-public class student {
-static String[][] student = {{"1212","Kareem","987654321"}, {"1515","Mohammed","147852"}};
-    public static String GetIDStudent(String username) {
-        String id = "";
-        for (int i = 0; i < student.length; i++) {
-            if (student[i][1].equals(username)) {
-                id = student[i][0];
-                break;
-            }
-        }
+public class Book {
+    private int ISBN ;
+    private String title ;
+    private String author ;
+    private String status ;
+
+    public Book(int ISBN, String title, String author, String status) {
+        this.ISBN = ISBN;
+        this.title = title;
+        this.author = author;
+        this.status = status;
+    }
+
+    public int getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(int ISBN) {
+        this.ISBN = ISBN;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    
+}
+
+
+
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package final_project;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author hp
+ */
+public class Student {
+    private String id ;
+    private int password ;
+   private  ArrayList<Book> reservedBooks = new ArrayList<Book>();
+
+    public Student(String id, int password , ArrayList<Book> reservedBooks
+    ) {
+        this.id = id;
+        this.password = password;
+        this.reservedBooks = reservedBooks;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public static void ReserveBook(String book_title, String username) {
-        for (int i = 0; i < numberofbook; i++) {
-            if (booktitle[i][0].equals(book_title)) {
-                System.out.println("Title :" + booktitle[i][0] + ", Number :" + booktitle[i][1] + ", auther :" + booktitle[i][2] + " ,status :" + booktitle[i][3]);
-                if (booktitle[i][3].equals("Available")) {
-                    System.out.println("If you  reserve this book , Enter Y");
-                    Scanner input4 = new Scanner(System.in);
-                    String input_stu = input4.next();
-                    if (input_stu.equals("Y") || input_stu.equals("y")) {
-                        String stu_id = GetIDStudent(username);
-                        Add_Books_Reserve(booktitle[i][0], Integer.parseInt(booktitle[i][1]), booktitle[i][2], stu_id);
-                        Update_Book_Detail(Integer.parseInt(booktitle[i][1]), booktitle[i][0], booktitle[i][1], booktitle[i][2], "reserved");
-                        System.out.println("The reserved done");
-                        break;
-                    } else {
-                        System.out.println("Please Enter a correct input");
-                    }
-                } else {
-                    System.out.println("The book reserved by anthor student");
-                }
-            }
-        }
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public static void CheckBookStatusStu(String input) {
-        for (int i = 0; i < numberofbook; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (booktitle[i][j].equals(input)) {
-                    System.out.println("Title :" + booktitle[i][0] + ", Status :" + booktitle[i][3]);
-                    break;
-                }
-            }
-        }
+    public int getPassword() {
+        return password;
     }
 
-    public static void RenewBook(String input) {
-        for (int i = 0; i < numberofbook; i++) {
-            if (booktitle[i][1].equals(input)) {
-                booktitle[i][3] = "reserved";
-                break;
-            }
-        }
+    public void setPassword(int password) {
+        this.password = password;
     }
 
-    private static void Add_Books_Reserve(String string, int parseInt, String string0, String stu_id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Book> getReservedBooks() {
+        return reservedBooks;
     }
-  
+
+    public void setReservedBooks(ArrayList<Book> reservedBooks) {
+        this.reservedBooks = reservedBooks;
+    }
+    
 }
 
-         
-                 }
-        
-        }
-    }  
-    }
-    }
